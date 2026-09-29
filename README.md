@@ -1,64 +1,80 @@
-# E-Commerce ELT Pipeline
+# 🛒 E-Commerce ELT Data Engineering Pipeline
 
-An end-to-end e-commerce data engineering project that extracts data from MySQL and CSV sources, loads it into HDFS, transforms and analyzes it using Apache Hive, stores analytical datasets in Parquet, and orchestrates the complete workflow with Apache Airflow.
+An end-to-end batch ELT data engineering project built on AWS EC2 Ubuntu Linux using Hadoop, HDFS, YARN, Hive, Sqoop, MySQL, Parquet and Apache Airflow.
 
-## Project Overview
+## 📌 Project Question
 
-This project demonstrates a complete batch ELT pipeline:
+**How can we build a reliable automated pipeline that combines e-commerce orders from CSV with customer data from MySQL and produces validated analytical datasets for business reporting?**
 
-MySQL / CSV → Sqoop / Shell → HDFS → Hive → Parquet → Airflow Data Quality Checks
+## 🎯 Objectives
 
-The pipeline processes customer and order data and produces analytical datasets for customer spending, daily sales, and top customers.
+- Extract orders from CSV
+- Extract customers from MySQL
+- Load raw data into HDFS
+- Use Sqoop for MySQL ingestion
+- Create Hive raw tables
+- Transform data using Hive SQL
+- Store curated data as Parquet
+- Generate customer, daily-sales and top-customer analytics
+- Perform data-quality validation
+- Orchestrate the workflow with Apache Airflow
+- Run the complete environment on AWS EC2 Ubuntu Linux
 
-## Architecture
+## 🏗️ Architecture
 
 ```text
-                 ┌──────────────────┐
-                 │   Data Sources   │
-                 │                  │
-                 │ MySQL Customers  │
-                 │ CSV Orders       │
-                 └────────┬─────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │ Extraction/Load  │
-                 │                  │
-                 │ Sqoop + Bash     │
-                 └────────┬─────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │      HDFS        │
-                 │    RAW Layer     │
-                 └────────┬─────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │      Hive        │
-                 │   RAW Tables     │
-                 └────────┬─────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │ Transformations  │
-                 │                  │
-                 │ SQL + Parquet    │
-                 └────────┬─────────┘
-                          │
-             ┌────────────┼────────────┐
-             │            │            │
-             ▼            ▼            ▼
-        Customer      Daily Sales   Top Customers
+                         AWS EC2
+                    Ubuntu Linux Server
+                            |
+                     APACHE AIRFLOW
+                    ORCHESTRATION
+                            |
+              +-------------+-------------+
+              |             |             |
+           EXTRACT         LOAD        TRANSFORM
+              |             |             |
+              +-------------+-------------+
+                            |
+              +-------------+-------------+
+              |                           |
+              v                           v
+         orders.csv                    MySQL
+              |                           |
+              v                           v
+        HDFS RAW                      customers
+              |                           |
+              |                         Sqoop
+              |                           |
+              +-------------+-------------+
+                            |
+                            v
+                         HDFS RAW
+                            |
+                +-----------+-----------+
+                |                       |
+                v                       v
+           orders_raw             customers_raw
+                |                       |
+                +-----------+-----------+
+                            |
+                            v
+                   HIVE TRANSFORMATION
+                            |
+                            v
+                  orders_transformed
+                       PARQUET
+                            |
+              +-------------+-------------+
+              |             |             |
+              v             v             v
+        Customer       Daily Sales   Top Customers
          Summary
-             │            │            │
-             └────────────┼────────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │  Data Quality    │
-                 │   Checks         │
-                 │                  │
-                 │ 20 orders        │
-                 │ 0 NULL records   │
-                 └────────┬─────────┘
-                          │
-                 ┌────────▼─────────┐
-                 │ Apache Airflow   │
-                 │   Orchestration  │
-                 └──────────────────┘
+              |             |             |
+              +-------------+-------------+
+                            |
+                            v
+                      DATA QUALITY
+                            |
+                            v
+                         VALIDATED
+
