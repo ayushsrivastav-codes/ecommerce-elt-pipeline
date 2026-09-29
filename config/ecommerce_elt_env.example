@@ -1,0 +1,4 @@
+# Copy these settings to ~/.ecommerce_elt_env
+# and replace the placeholder with your actual Sqoop password.
+
+export SQOOP_PASSWORD="YOUR_PASSWORD_HERE"
