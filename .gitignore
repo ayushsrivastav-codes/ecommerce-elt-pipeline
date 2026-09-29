@@ -1,0 +1,38 @@
+# Secrets and credentials
+.env
+*.env
+.ecommerce_elt_env
+*.pem
+*.key
+credentials*
+secrets*
+
+# Airflow
+airflow.db
+airflow.cfg
+airflow/logs/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+airflow-env/
+
+# Hive / Hadoop generated files
+*.crc
+_SUCCESS
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
